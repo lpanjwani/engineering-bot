@@ -1,0 +1,12 @@
+services:
+  chroma:
+    image: ghcr.io/chroma-core/chroma:latest
+    ports:
+      - 8000:8000
+    volumes:
+      - chroma-storage:/index_data
+
+volumes:
+  chroma-storage:
+    driver: local
+
