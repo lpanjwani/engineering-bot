@@ -4,3 +4,4 @@ chromadb==0.4.16
 sentence-transformers==2.2.2
 openai==1.2.2
 python-dotenv==1.0.0
+esprima==4.0.1
