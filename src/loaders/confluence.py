@@ -2,65 +2,49 @@ from langchain.text_splitter import (
     RecursiveCharacterTextSplitter
 )
 from langchain.document_loaders import ConfluenceLoader
-from langchain.embeddings import SentenceTransformerEmbeddings
 import os
-from langchain.vectorstores import Chroma
-from langchain.chat_models import ChatOpenAI
-from langchain.memory import ConversationSummaryMemory
-from langchain.chains import ConversationalRetrievalChain
+from src.database.chroma import ChromaDatabase
 
-ATLASSIAN_URL = "https://hakbah.atlassian.net/wiki"
-ATLASSIAN_USERNAME = os.environ.get["ATLASSIAN_USERNAME"]
-ATLASSIAN_ACCESS_TOKEN = os.environ.get["ATLASSIAN_ACCESS_TOKEN"]
+ATLASSIAN_URL = os.environ["ATLASSIAN_URL"]
+ATLASSIAN_USERNAME = os.environ["ATLASSIAN_USERNAME"]
+ATLASSIAN_ACCESS_TOKEN = os.environ["ATLASSIAN_ACCESS_TOKEN"]
 ATLASSIAN_SPACE_KEY = "JS"
 
-
 class HakbahConfluenceLoader:
-    def __init__(self, url, username, api_key):
+    loader: ConfluenceLoader
+    database: ChromaDatabase
+
+    def run(self):
+        self.__intit_loader()
+        self.__init_database()
+        raw_results = self.__load()
+        documents = self.__split_documents(raw_results)
+        self.__embbed_to_database(documents)
+
+    def __init_database(self):
+        self.database = ChromaDatabase()
+
+    def __intit_loader(self):
         self.loader = ConfluenceLoader(
-            url=url,
-            username=username,
-            api_key=api_key
+            url=ATLASSIAN_URL,
+            username=ATLASSIAN_USERNAME,
+            api_key=ATLASSIAN_ACCESS_TOKEN,
         )
 
-    def load(self):
+    def __load(self):
         raw_results = self.loader.load(
             space_key=ATLASSIAN_SPACE_KEY, 
-            include_attachments=True
+            include_attachments=True,
+            limit=1
         )
 
         return raw_results
 
-    def split_documents(self, raw_results):
+    def __split_documents(self, raw_results):
         splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
         documents = splitter.split_documents(raw_results)
 
         return documents
 
-    def embbed_to_database(self, documents):
-        embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-
-        database = Chroma.from_documents(documents, embeddings)
-
-        return database
-
-    def get_retriever(self, database):
-        retriever = database.as_retriever(
-            search_type="mmr",
-            search_kwargs={"k": 8, "include_metadata": True}
-        )
-
-        return retriever
-
-    def get_memory(self):
-        llm = ChatOpenAI(model_name="gpt-3.5-turbo")
-        memory = ConversationSummaryMemory(
-            llm=llm, memory_key="chat_history", return_messages=True
-        )
-
-        return memory
-    
-    def get_qa(self, llm, retriever, memory):
-        qa = ConversationalRetrievalChain.from_llm(llm, retriever=retriever, memory=memory)
-
-        return qa
+    def __embbed_to_database(self, documents):
+        self.database.insert_documents(documents)
