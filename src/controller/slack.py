@@ -45,7 +45,8 @@ async def SlackEventProcessor():
 
             if req.payload["event"]["type"] == "message":
                 await react_to_message("eyes", req)
-                rag_response = await rag_agent.ask(req.payload["event"]["text"])
+                user_question = req.payload["event"]["text"]
+                rag_response = await rag_agent.ask(user_question)
                 await post_message(rag_response, client, req)
 
     client.socket_mode_request_listeners.append(process)
@@ -53,6 +54,3 @@ async def SlackEventProcessor():
     await client.connect()
 
     await asyncio.sleep(float("inf"))
-
-
-asyncio.run(SlackEventProcessor())
