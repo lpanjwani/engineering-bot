@@ -6,13 +6,13 @@ from slack_sdk.socket_mode.aiohttp import SocketModeClient
 app_token = os.environ.get("SLACK_APP_TOKEN")
 bot_token = os.environ.get("SLACK_BOT_TOKEN")
 
+
 async def SlackEventProcessor():
     from slack_sdk.socket_mode.response import SocketModeResponse
     from slack_sdk.socket_mode.request import SocketModeRequest
 
     client = SocketModeClient(
-        app_token=app_token,
-        web_client=AsyncWebClient(token=bot_token) 
+        app_token=app_token, web_client=AsyncWebClient(token=bot_token)
     )
 
     async def ack(req: SocketModeRequest):
@@ -22,7 +22,7 @@ async def SlackEventProcessor():
     async def check_for_bot_or_throw(req: SocketModeRequest):
         if req.payload["event"].get("bot_id") is not None:
             raise Exception("Bot Event Loop Detected")
-        
+
     async def react_to_message(emoji, req: SocketModeRequest):
         await client.web_client.reactions_add(
             name=emoji,
@@ -32,8 +32,7 @@ async def SlackEventProcessor():
 
     async def post_message(text, client: SocketModeClient, req: SocketModeRequest):
         await client.web_client.chat_postMessage(
-            channel=req.payload["event"]["channel"],
-            text=text
+            channel=req.payload["event"]["channel"], text=text
         )
 
     async def process(client: SocketModeClient, req: SocketModeRequest):
@@ -45,11 +44,11 @@ async def SlackEventProcessor():
                 await react_to_message("eyes", req)
                 await post_message(":wave: Hello there!", client, req)
 
-
     client.socket_mode_request_listeners.append(process)
 
     await client.connect()
 
     await asyncio.sleep(float("inf"))
+
 
 asyncio.run(SlackEventProcessor())

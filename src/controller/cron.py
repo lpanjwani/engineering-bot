@@ -3,6 +3,7 @@ import time
 from src.loaders.confluence import HakbahConfluenceLoader
 from src.database.chroma import ChromaDatabase
 
+
 def CronController():
     def task():
         print("Reseting Database!")
