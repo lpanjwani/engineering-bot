@@ -2,6 +2,7 @@ import asyncio
 import os
 from slack_sdk.web.async_client import AsyncWebClient
 from slack_sdk.socket_mode.aiohttp import SocketModeClient
+from src.agents.rag import RAGAgent
 
 app_token = os.environ.get("SLACK_APP_TOKEN")
 bot_token = os.environ.get("SLACK_BOT_TOKEN")
@@ -10,6 +11,8 @@ bot_token = os.environ.get("SLACK_BOT_TOKEN")
 async def SlackEventProcessor():
     from slack_sdk.socket_mode.response import SocketModeResponse
     from slack_sdk.socket_mode.request import SocketModeRequest
+
+    rag_agent = RAGAgent()
 
     client = SocketModeClient(
         app_token=app_token, web_client=AsyncWebClient(token=bot_token)
@@ -42,7 +45,8 @@ async def SlackEventProcessor():
 
             if req.payload["event"]["type"] == "message":
                 await react_to_message("eyes", req)
-                await post_message(":wave: Hello there!", client, req)
+                rag_response = await rag_agent.ask(req.payload["event"]["text"])
+                await post_message(rag_response, client, req)
 
     client.socket_mode_request_listeners.append(process)
 
