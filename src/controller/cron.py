@@ -15,6 +15,8 @@ def CronController():
         print("Loading Confluence!")
         HakbahConfluenceLoader().run()
 
+        print("Done!")
+
     args = get_args()
     if args.reindex:
         run()
