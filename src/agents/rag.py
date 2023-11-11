@@ -15,7 +15,7 @@ class RAGAgent:
     def __get_retreiver(self) -> None:
         database = ChromaDatabase().get_langchain_class()
 
-        self.retriever = database.get_retriever(
+        self.retriever = database.as_retriever(
             search_type="mmr",
             search_kwargs={"k": 8},
         )
