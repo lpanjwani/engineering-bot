@@ -5,7 +5,7 @@ from src.database.chroma import ChromaDatabase
 
 
 def CronController():
-    def task():
+    def run():
         print("Reseting Database!")
         db = ChromaDatabase()
         db.delete_collection()
@@ -14,9 +14,9 @@ def CronController():
         print("Loading Confluence!")
         HakbahConfluenceLoader().run()
 
-    task()
+    run()
 
-    schedule.every().day.do(task)
+    schedule.every().day.do(run)
 
     while True:
         schedule.run_pending()
