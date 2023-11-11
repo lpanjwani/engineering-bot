@@ -21,14 +21,14 @@ class RAGAgent:
         )
 
     def __build_qa(self) -> None:
-        llm = ChatOpenAI(model_name="gpt-3.5-turbo")
+        llm = ChatOpenAI(model_name="gpt-3.5-turbo", verbose=True)
         memory = ConversationSummaryMemory(
-            llm=llm, memory_key="chat_history", return_messages=True
+            llm=llm, memory_key="chat_history", return_messages=True, verbose=True
         )
         self.qa = ConversationalRetrievalChain.from_llm(
-            llm, retriever=self.retriever, memory=memory
+            llm, retriever=self.retriever, memory=memory, verbose=True
         )
 
     def ask(self, question: str) -> str:
-        answer = self.qa.ask(question)
-        return answer
+        answer = self.qa(question)
+        return answer["answer"]

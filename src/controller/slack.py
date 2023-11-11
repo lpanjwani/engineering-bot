@@ -1,6 +1,6 @@
 from src.agents.rag import RAGAgent
-from slack_sdk.web.async_client import AsyncWebClient
-from slack_sdk.socket_mode.aiohttp import SocketModeClient
+from slack_sdk.web import WebClient
+from slack_sdk.socket_mode import SocketModeClient
 import os
 
 app_token = os.environ.get("SLACK_APP_TOKEN")
@@ -14,7 +14,7 @@ def SlackEventProcessor():
     rag_agent = RAGAgent()
 
     client = SocketModeClient(
-        app_token=app_token, web_client=AsyncWebClient(token=bot_token)
+        app_token=app_token, web_client=WebClient(token=bot_token)
     )
 
     def ack(req: SocketModeRequest):
@@ -32,7 +32,7 @@ def SlackEventProcessor():
             timestamp=req.payload["event"]["ts"],
         )
 
-    def post_message(text, client: SocketModeClient, req: SocketModeRequest):
+    def post_message(text: str, client: SocketModeClient, req: SocketModeRequest):
         client.web_client.chat_postMessage(
             channel=req.payload["event"]["channel"], text=text
         )
@@ -47,6 +47,8 @@ def SlackEventProcessor():
                 user_question = req.payload["event"]["text"]
                 rag_response = rag_agent.ask(user_question)
                 post_message(rag_response, client, req)
+                print(f"Question: {user_question}")
+                print(f"Answer: {rag_response}")
 
     client.socket_mode_request_listeners.append(process)
 
