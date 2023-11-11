@@ -1,8 +1,9 @@
 from src.database.chroma import ChromaDatabase
 from langchain.vectorstores import Chroma
-from langchain.chat_models import ChatOpenAI
+
 from langchain.memory import ConversationSummaryMemory
 from langchain.chains import ConversationalRetrievalChain
+from langchain.llms import Ollama
 
 
 class RAGAgent:
@@ -17,22 +18,25 @@ class RAGAgent:
 
         self.retriever = database.as_retriever(
             search_type="mmr",
-            search_kwargs={"k": 8},
+            search_kwargs={"k": 5},
         )
 
     def __build_qa(self) -> None:
-        llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo",
+        llm = Ollama(
+            model="codellama",
+            verbose=True,
         )
         memory = ConversationSummaryMemory(
             llm=llm,
             memory_key="chat_history",
             return_messages=True,
+            verbose=True,
         )
         self.qa = ConversationalRetrievalChain.from_llm(
             llm,
             retriever=self.retriever,
             memory=memory,
+            verbose=True,
         )
 
     def ask(self, question: str) -> str:

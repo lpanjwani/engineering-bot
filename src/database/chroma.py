@@ -24,8 +24,8 @@ class ChromaDatabase:
     def get_embedding_model(self) -> SentenceTransformerEmbeddings:
         return SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
 
-    def reset_collection(self) -> None:
-        self.collection.reset()
+    def delete_collection(self) -> None:
+        self.client.delete_collection(COLLECTION_NAME)
 
     def insert_documents(self, documents) -> None:
         for doc in documents:

@@ -8,11 +8,13 @@ def CronController():
     def task():
         print("Reseting Database!")
         db = ChromaDatabase()
-        db.reset_collection()
+        db.delete_collection()
         db.create_collection()
 
         print("Loading Confluence!")
         HakbahConfluenceLoader().run()
+
+    task()
 
     schedule.every().day.do(task)
 

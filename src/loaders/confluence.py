@@ -1,6 +1,4 @@
-from langchain.text_splitter import (
-    RecursiveCharacterTextSplitter
-)
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import ConfluenceLoader
 import os
 from src.database.chroma import ChromaDatabase
@@ -9,6 +7,7 @@ ATLASSIAN_URL = os.environ["ATLASSIAN_URL"]
 ATLASSIAN_USERNAME = os.environ["ATLASSIAN_USERNAME"]
 ATLASSIAN_ACCESS_TOKEN = os.environ["ATLASSIAN_ACCESS_TOKEN"]
 ATLASSIAN_SPACE_KEY = "JS"
+
 
 class HakbahConfluenceLoader:
     loader: ConfluenceLoader
@@ -33,15 +32,13 @@ class HakbahConfluenceLoader:
 
     def __load(self):
         raw_results = self.loader.load(
-            space_key=ATLASSIAN_SPACE_KEY, 
-            include_attachments=True,
-            limit=1
+            space_key=ATLASSIAN_SPACE_KEY, include_attachments=True
         )
 
         return raw_results
 
     def __split_documents(self, raw_results):
-        splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+        splitter = RecursiveCharacterTextSplitter(chunk_size=250, chunk_overlap=50)
         documents = splitter.split_documents(raw_results)
 
         return documents
