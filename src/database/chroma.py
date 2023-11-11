@@ -10,18 +10,20 @@ class ChromaDatabase:
     collection: chromadb.Collection
 
     def __init__(self) -> None:
-        self.build_http_client()
-        self.create_collection(COLLECTION_NAME)
+        self.__build_http_client()
+        self.create_collection()
 
-    def build_http_client(self):
+    def __build_http_client(self):
         self.client = chromadb.HttpClient(settings=Settings(allow_reset=True))
     
-    def create_collection(self, name):
-       self.collection =  self.client.get_or_create_collection(name)
-
+    def create_collection(self):
+       self.collection =  self.client.get_or_create_collection(COLLECTION_NAME)
 
     def get_embedding_model(self):
         return SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    
+    def reset_collection(self):
+        self.collection.reset()
     
     def insert_documents(self, documents):
         for doc in documents:
