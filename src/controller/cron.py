@@ -1,12 +1,8 @@
+from src.controller.cli import get_args
 from src.loaders.confluence import HakbahConfluenceLoader
 from src.database.chroma import ChromaDatabase
 import schedule
-import argparse
 import time
-
-parser = argparse.ArgumentParser()
-
-parser.add_argument("--reindex", help="Reindex the database", type=bool, default=False)
 
 
 def CronController():
@@ -19,7 +15,8 @@ def CronController():
         print("Loading Confluence!")
         HakbahConfluenceLoader().run()
 
-    if parser.parse_args().reindex:
+    args = get_args()
+    if args.reindex:
         run()
 
     schedule.every().day.do(run)
