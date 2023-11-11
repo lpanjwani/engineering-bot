@@ -25,7 +25,7 @@ def SlackEventProcessor():
         if req.payload["event"].get("bot_id") is not None:
             raise Exception("Bot Event Loop Detected")
 
-    def react_to_message(emoji, req: SocketModeRequest):
+    def react_to_message(emoji: str, req: SocketModeRequest):
         client.web_client.reactions_add(
             name=emoji,
             channel=req.payload["event"]["channel"],
@@ -45,10 +45,10 @@ def SlackEventProcessor():
             if req.payload["event"]["type"] == "message":
                 react_to_message("eyes", req)
                 user_question = req.payload["event"]["text"]
-                rag_response = rag_agent.ask(user_question)
-                post_message(rag_response, client, req)
                 print(f"Question: {user_question}")
+                rag_response = rag_agent.ask(user_question)
                 print(f"Answer: {rag_response}")
+                post_message(rag_response, client, req)
 
     client.socket_mode_request_listeners.append(process)
 
