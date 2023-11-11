@@ -34,7 +34,9 @@ def SlackEventProcessor():
 
     def post_message(text: str, client: SocketModeClient, req: SocketModeRequest):
         client.web_client.chat_postMessage(
-            channel=req.payload["event"]["channel"], text=text
+            channel=req.payload["event"]["channel"],
+            thread_ts=req.payload["event"]["ts"],
+            text=text,
         )
 
     def process(client: SocketModeClient, req: SocketModeRequest):
