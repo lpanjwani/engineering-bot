@@ -17,7 +17,7 @@ services:
     environment:
       - PYTHONPATH=/workspaces/Smart_Bot
       - CHROMA_HOST=chroma
-      - OLLAMA_API_HOST=http://ollama:11434
+      - OLLAMA_API_HOST=ollama
       - LLM_MODEL=codellama
 
   ollama:

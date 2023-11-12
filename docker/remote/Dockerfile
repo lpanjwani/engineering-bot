@@ -2,7 +2,12 @@ FROM python:3.10
 
 # Install Dependencies
 RUN apt update
-RUN apt install -y tesseract-ocr libtesseract-dev libcairo2-dev git
+RUN apt install -y \
+    tesseract-ocr \
+    libtesseract-dev \
+    libcairo2-dev \
+    git \
+    poppler-utils
 
 # Create app directory
 WORKDIR /workspaces/Smart_Bot
@@ -17,6 +22,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Set Environment Variable
+RUN mkdir ~/.ssh
 RUN echo $GITHUB_SSH_KEY >> ~/.ssh/id_rsa
 
 # Run app
