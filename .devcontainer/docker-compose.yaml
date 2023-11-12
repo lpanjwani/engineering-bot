@@ -1,20 +1,20 @@
+version: '3.8'
+
 services:
-  smart-bot:
-    container_name: smart_bot
-    build: 
-      context: ../../
-      dockerfile: docker/dev/Dockerfile
-    depends_on:
-      - 'chroma'
-      - 'ollama'
-    env_file: ../../.env
+  smart_bot:
+    name: smart_bot
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ../:/workspaces/Smart_Bot:cached
+    command: sleep infinity
     networks:
-      - smart_bot_network
+      - smart_bot
     environment:
       - CHROMA_HOST=chroma
       - OLLAMA_API_HOST=http://ollama:11434
       - LLM_MODEL=codellama
-
 
   ollama:
     container_name: ollama

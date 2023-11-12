@@ -20,7 +20,7 @@ class ChromaDatabase:
 
     def __build_http_client(self):
         self.client = chromadb.HttpClient(
-            host=CHROMA_HOST, settings=Settings(allow_reset=True)
+            host="http://" + CHROMA_HOST + ":11434", settings=Settings(allow_reset=True)
         )
 
     def create_collection(self) -> None:

@@ -1,0 +1,11 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
+{
+    "name": "Hakbah - Smart Bot",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/workspaces/Smart_Bot",
+    "features": {},
+    "forwardPorts": [],
+    "postCreateCommand": "pip3 install --user -r requirements.txt"
+}
