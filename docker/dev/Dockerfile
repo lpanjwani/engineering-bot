@@ -16,4 +16,5 @@ COPY . .
 ENV PYTHONPATH "/workspaces/smart-bot"
 
 # Run app
-CMD ["bash", "docker/dev/entrypoint.sh"]
+CMD ["python3", "src/app.py", "--reindex=True"]
+
