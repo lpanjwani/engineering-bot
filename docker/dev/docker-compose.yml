@@ -1,12 +1,42 @@
 services:
+  smart-bot:
+    container_name: smart_bot
+    build: 
+      context: ../../
+      dockerfile: docker/dev/Dockerfile
+    depends_on:
+      - 'chroma'
+      - 'ollama'
+    env_file: ../../.env
+    networks:
+      - smart_bot_network
+    environment:
+      -  OLLAMA_API_BASE_URL=http://ollama:11434
+      -  LLM_MODEL=codellama
+
+
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama-storage:/root/.ollama
+    networks:
+      - smart_bot_network
+
+
   chroma:
     image: ghcr.io/chroma-core/chroma:latest
     ports:
       - 8000:8000
     volumes:
       - chroma-storage:/index_data
+    networks:
+      - smart_bot_network
+
 
 volumes:
+  ollama-storage:
   chroma-storage:
-    driver: local
 
+networks:
+  smart_bot_network:
+    name: smart_bot_network

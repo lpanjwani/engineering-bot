@@ -1,17 +1,11 @@
-from tabnanny import verbose
 from src.database.chroma import ChromaDatabase
 from langchain.vectorstores import Chroma
 
-from langchain.memory import ConversationSummaryMemory
-from langchain.chains import ConversationalRetrievalChain
 from langchain.chains import RetrievalQA
 from langchain.llms import Ollama
-from langchain.schema import SystemMessage
-from langchain.prompts import (
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-    MessagesPlaceholder,
-)
+import os
+
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 
 
 class RAGAgent:
@@ -30,10 +24,7 @@ class RAGAgent:
         )
 
     def __build_qa(self) -> None:
-        llm = Ollama(
-            model="codellama",
-            verbose=True,
-        )
+        llm = Ollama(model="codellama", verbose=True, base_url=OLLAMA_BASE_URL)
 
         self.qa = RetrievalQA.from_chain_type(
             llm=llm, chain_type="stuff", retriever=self.retriever
