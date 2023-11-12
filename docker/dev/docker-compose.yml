@@ -11,8 +11,9 @@ services:
     networks:
       - smart_bot_network
     environment:
-      -  OLLAMA_API_BASE_URL=http://ollama:11434
-      -  LLM_MODEL=codellama
+      - CHROME_DB_URL=http://chroma:8000
+      - OLLAMA_API_BASE_URL=http://ollama:11434
+      - LLM_MODEL=codellama
 
 
   ollama:
@@ -25,8 +26,6 @@ services:
 
   chroma:
     image: ghcr.io/chroma-core/chroma:latest
-    ports:
-      - 8000:8000
     volumes:
       - chroma-storage:/index_data
     networks:
