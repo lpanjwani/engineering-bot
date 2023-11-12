@@ -20,4 +20,4 @@ def pull_model(model_name):
     requests.post(url, data=data, headers=headers)
 
 
-pull_model(model_name_=model_name)
+pull_model(model_name=model_name)
