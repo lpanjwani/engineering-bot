@@ -6,6 +6,7 @@ from langchain.llms import Ollama
 import os
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+LLM_MODEL = os.getenv("LLM_MODEL", "codellama")
 
 
 class RAGAgent:
@@ -24,7 +25,7 @@ class RAGAgent:
         )
 
     def __build_qa(self) -> None:
-        llm = Ollama(model="codellama", verbose=True, base_url=OLLAMA_BASE_URL)
+        llm = Ollama(model=LLM_MODEL, verbose=True, base_url=OLLAMA_BASE_URL)
 
         self.qa = RetrievalQA.from_chain_type(
             llm=llm, chain_type="stuff", retriever=self.retriever
