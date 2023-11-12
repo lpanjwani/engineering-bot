@@ -5,7 +5,7 @@ RUN apt update
 RUN apt install -y tesseract-ocr libtesseract-dev libcairo2-dev git
 
 # Create app directory
-WORKDIR /workspaces/smart-bot
+WORKDIR /workspaces/Smart_Bot
 
 # Install app dependencies
 COPY requirements.txt requirements.txt
