@@ -3,8 +3,11 @@ from langchain.vectorstores import Chroma
 from chromadb.config import Settings
 import chromadb
 import uuid
+import os
 
 COLLECTION_NAME = "Engineering"
+
+CHROMA_HOST = os.getenv("CHROMA_HOST", "localhost")
 
 
 class ChromaDatabase:
@@ -16,7 +19,9 @@ class ChromaDatabase:
         self.create_collection()
 
     def __build_http_client(self):
-        self.client = chromadb.HttpClient(settings=Settings(allow_reset=True))
+        self.client = chromadb.HttpClient(
+            host=CHROMA_HOST, settings=Settings(allow_reset=True)
+        )
 
     def create_collection(self) -> None:
         self.collection = self.client.get_or_create_collection(COLLECTION_NAME)

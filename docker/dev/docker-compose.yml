@@ -11,7 +11,7 @@ services:
     networks:
       - smart_bot_network
     environment:
-      - CHROME_DB_URL=http://chroma:8000
+      - CHROMA_HOST=chroma
       - OLLAMA_API_BASE_URL=http://ollama:11434
       - LLM_MODEL=codellama
 
