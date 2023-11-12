@@ -1,5 +1,5 @@
 from src.database.chroma import ChromaDatabase
-from src.loaders.codebase import HakbahCodebaseLoader
+from src.loaders.codebase import CodebaseRepos, HakbahCodebaseLoader
 from src.loaders.confluence import HakbahConfluenceLoader
 from src.loaders.pull_model import pull_model
 
@@ -16,7 +16,9 @@ def reindex():
     HakbahConfluenceLoader().run()
 
     print("Indexing Codebase!")
-    HakbahCodebaseLoader().run()
+    HakbahCodebaseLoader().run(CodebaseRepos.NEST_API)
+    HakbahCodebaseLoader().run(CodebaseRepos.ADMIN_API_SERVICE)
+    HakbahCodebaseLoader().run(CodebaseRepos.ADMIN_UI_SERVICE)
 
     print("Done!")
 

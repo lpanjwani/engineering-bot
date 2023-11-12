@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   smart_bot:
-    name: smart_bot
+    container_name: smart_bot
     build:
       context: ../
       dockerfile: .devcontainer/Dockerfile
@@ -13,14 +13,16 @@ services:
       - ollama
       - chroma
     networks:
-      - smart_bot
+      - smart_bot_network
     environment:
+      - PYTHONPATH=/workspaces/Smart_Bot
       - CHROMA_HOST=chroma
       - OLLAMA_API_HOST=http://ollama:11434
       - LLM_MODEL=codellama
 
   ollama:
     container_name: ollama
+    restart: unless-stopped
     image: ollama/ollama:latest
     volumes:
       - ollama-storage:/root/.ollama
@@ -30,6 +32,7 @@ services:
 
   chroma:
     container_name: chroma
+    restart: unless-stopped
     image: ghcr.io/chroma-core/chroma:latest
     volumes:
       - chroma-storage:/index_data

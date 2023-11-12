@@ -1,8 +1,8 @@
-FROM python:3.9
+FROM python:3.10
 
 # Install Dependencies
 RUN apt update
-RUN apt install -y tesseract-ocr libtesseract-dev
+RUN apt install -y tesseract-ocr libtesseract-dev libcairo2-dev git
 
 # Create app directory
 WORKDIR /workspaces/smart-bot
@@ -16,8 +16,8 @@ RUN pip install -r requirements.txt
 # Copy app source
 COPY . .
 
-# Set environment variables
-ENV PYTHONPATH "/workspaces/smart-bot"
+# Set Environment Variable
+RUN echo $GITHUB_SSH_KEY >> ~/.ssh/id_rsa
 
 # Run app
 CMD ["python3", "src/app.py", "--pull_model=True" , "--reindex=True"]

@@ -7,7 +7,7 @@ import os
 
 COLLECTION_NAME = "Engineering"
 
-CHROMA_HOST = os.getenv("CHROMA_HOST", "localhost")
+CHROMA_HOST = os.getenv("CHROMA_HOST", "chroma")
 
 
 class ChromaDatabase:
@@ -19,8 +19,10 @@ class ChromaDatabase:
         self.create_collection()
 
     def __build_http_client(self):
+        client_host = 'http://{CHROMA_HOST}:8000'.format(CHROMA_HOST=CHROMA_HOST)
+
         self.client = chromadb.HttpClient(
-            host="http://" + CHROMA_HOST + ":11434", settings=Settings(allow_reset=True)
+            host=client_host, settings=Settings(allow_reset=True)
         )
 
     def create_collection(self) -> None:
