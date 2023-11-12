@@ -9,6 +9,9 @@ services:
     volumes:
       - ../:/workspaces/Smart_Bot:cached
     command: sleep infinity
+    depends_on:
+      - ollama
+      - chroma
     networks:
       - smart_bot
     environment:
