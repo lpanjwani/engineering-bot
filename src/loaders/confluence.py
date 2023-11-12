@@ -38,7 +38,7 @@ class HakbahConfluenceLoader:
         return raw_results
 
     def __split_documents(self, raw_results):
-        splitter = RecursiveCharacterTextSplitter(chunk_size=250, chunk_overlap=50)
+        splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=25)
         documents = splitter.split_documents(raw_results)
 
         return documents

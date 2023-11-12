@@ -1,9 +1,17 @@
+from tabnanny import verbose
 from src.database.chroma import ChromaDatabase
 from langchain.vectorstores import Chroma
 
 from langchain.memory import ConversationSummaryMemory
 from langchain.chains import ConversationalRetrievalChain
+from langchain.chains import RetrievalQA
 from langchain.llms import Ollama
+from langchain.schema import SystemMessage
+from langchain.prompts import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+    MessagesPlaceholder,
+)
 
 
 class RAGAgent:
@@ -18,7 +26,7 @@ class RAGAgent:
 
         self.retriever = database.as_retriever(
             search_type="mmr",
-            search_kwargs={"k": 5},
+            search_kwargs={"k": 8},
         )
 
     def __build_qa(self) -> None:
@@ -26,19 +34,11 @@ class RAGAgent:
             model="codellama",
             verbose=True,
         )
-        memory = ConversationSummaryMemory(
-            llm=llm,
-            memory_key="chat_history",
-            return_messages=True,
-            verbose=True,
-        )
-        self.qa = ConversationalRetrievalChain.from_llm(
-            llm,
-            retriever=self.retriever,
-            memory=memory,
-            verbose=True,
+
+        self.qa = RetrievalQA.from_chain_type(
+            llm=llm, chain_type="stuff", retriever=self.retriever
         )
 
     def ask(self, question: str) -> str:
-        result = self.qa(question)
-        return result["answer"]
+        result = self.qa.run(question)
+        return result
