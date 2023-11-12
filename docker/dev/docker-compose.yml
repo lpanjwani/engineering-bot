@@ -17,6 +17,7 @@ services:
 
 
   ollama:
+    container_name: ollama
     image: ollama/ollama:latest
     volumes:
       - ollama-storage:/root/.ollama
@@ -25,6 +26,7 @@ services:
 
 
   chroma:
+    container_name: chroma
     image: ghcr.io/chroma-core/chroma:latest
     volumes:
       - chroma-storage:/index_data
