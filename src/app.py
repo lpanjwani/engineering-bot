@@ -10,7 +10,7 @@ args = get_args()
 
 
 def startup():
-    init(pull_model=args.pull_model, cleanup=args.cleanup, reindex=args.reindex)
+    init(args)
     SlackEventProcessor()
     CronController()
     Event().wait()

@@ -1,5 +1,9 @@
 FROM python:3.9
 
+# Install Dependencies
+RUN apt update
+RUN apt install -y tesseract-ocr libtesseract-dev
+
 # Create app directory
 WORKDIR /workspaces/smart-bot
 
@@ -16,5 +20,5 @@ COPY . .
 ENV PYTHONPATH "/workspaces/smart-bot"
 
 # Run app
-CMD ["python3", "src/app.py", "--reindex=True"]
+CMD ["python3", "src/app.py", "--pull_model=True" , "--reindex=True"]
 
