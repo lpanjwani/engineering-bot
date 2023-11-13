@@ -1,6 +1,9 @@
+import logging
 from src.agents.rag import RAGAgent
 from slack_sdk.web import WebClient
 from slack_sdk.socket_mode import SocketModeClient
+from slack_sdk.socket_mode.response import SocketModeResponse
+from slack_sdk.socket_mode.request import SocketModeRequest
 import os
 
 app_token = os.environ.get("SLACK_APP_TOKEN")
@@ -8,9 +11,6 @@ bot_token = os.environ.get("SLACK_BOT_TOKEN")
 
 
 def SlackEventProcessor():
-    from slack_sdk.socket_mode.response import SocketModeResponse
-    from slack_sdk.socket_mode.request import SocketModeRequest
-
     rag_agent = RAGAgent()
 
     client = SocketModeClient(
@@ -47,9 +47,9 @@ def SlackEventProcessor():
             if req.payload["event"]["type"] == "message":
                 react_to_message("eyes", req)
                 user_question = req.payload["event"]["text"]
-                print(f"Question: {user_question}")
+                logging.info(f"Question: {user_question}")
                 rag_response = rag_agent.ask(user_question)
-                print(f"Answer: {rag_response}")
+                logging.info(f"Answer: {rag_response}")
                 post_message(rag_response, client, req)
 
     client.socket_mode_request_listeners.append(process)

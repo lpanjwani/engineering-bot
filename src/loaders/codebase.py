@@ -1,3 +1,4 @@
+from math import log
 from langchain.text_splitter import (
     RecursiveCharacterTextSplitter,
     Language,
@@ -10,6 +11,7 @@ from src.database.chroma import ChromaDatabase
 from git import Repo
 from enum import Enum
 import os
+import logging
 import shutil
 
 
@@ -28,12 +30,19 @@ class HakbahCodebaseLoader:
         pass
 
     def run(self, github_slug: CodebaseRepos) -> None:
+        logging.info("Codebase Loader: Starting")
         self.__downlod_repo(github_slug)
+        logging.info("Codebase Loader: Connecting to Database")
         self.__init_database()
+        logging.info("Codebase Loader: Loading Data")
         self.__intit_loader()
+        logging.info("Codebase Loader: Splitting Documents")
         raw_results = self.__load()
+        logging.info("Codebase Loader: Embedding to Database")
         documents = self.__split_documents(raw_results)
+        logging.info("Codebase Loader: Embedding to Database")
         self.__embbed_to_database(documents)
+        logging.info("Codebase Loader: Deleting Repo")
         self.__delete_folder()
 
     def __downlod_repo(self, github_slug: CodebaseRepos) -> None:
@@ -45,6 +54,8 @@ class HakbahCodebaseLoader:
         repo_name = slug_split[1]
 
         self.repo_path = os.path.join("./repos", repo_name)
+
+        logging.info(f"Cloning Repo: {ssh_url} to {self.repo_path}")
 
         Repo.clone_from(ssh_url, to_path=self.repo_path)
 
