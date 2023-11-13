@@ -9,6 +9,8 @@ services:
     env_file: ../../.env
     networks:
       - smart_bot_network
+    volumes:
+      - ~/.ssh:/root/.ssh
     environment:
       - PYTHONPATH=/workspaces/Smart_Bot
       - CHROMA_HOST=chroma
