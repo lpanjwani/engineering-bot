@@ -1,20 +1,25 @@
-import logging
 from src.agents.rag import RAGAgent
 from slack_sdk.web import WebClient
 from slack_sdk.socket_mode import SocketModeClient
 from slack_sdk.socket_mode.response import SocketModeResponse
 from slack_sdk.socket_mode.request import SocketModeRequest
+import logging
 import os
 
 app_token = os.environ.get("SLACK_APP_TOKEN")
 bot_token = os.environ.get("SLACK_BOT_TOKEN")
+
+logger = logging.getLogger(__name__)
 
 
 def SlackEventProcessor():
     rag_agent = RAGAgent()
 
     client = SocketModeClient(
-        app_token=app_token, web_client=WebClient(token=bot_token)
+        app_token=app_token,
+        web_client=WebClient(token=bot_token),
+        logger=logger,
+        trace_enabled=True,
     )
 
     def ack(req: SocketModeRequest):

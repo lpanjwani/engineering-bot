@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.9-slim-bookworm
 
 # Install Dependencies
 RUN apt update
@@ -6,8 +6,12 @@ RUN apt install -y \
     tesseract-ocr \
     libtesseract-dev \
     libcairo2-dev \
-    git \
-    poppler-utils
+    poppler-utils \
+    gcc \
+    git
+
+# Create SSH Keys Directory
+RUN mkdir ~/.ssh
 
 # Create app directory
 WORKDIR /workspaces/Smart_Bot
@@ -20,9 +24,6 @@ RUN pip install -r requirements.txt
 
 # Copy app source
 COPY . .
-
-# Create SSH Keys
-RUN mkdir ~/.ssh
 
 # Run app
 CMD ["python3", "src/app.py", "--pull_model=True" , "--reindex=True"]

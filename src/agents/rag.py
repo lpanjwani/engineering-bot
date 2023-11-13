@@ -1,3 +1,4 @@
+import logging
 from src.database.chroma import ChromaDatabase
 from langchain.vectorstores import Chroma
 
@@ -5,15 +6,20 @@ from langchain.chains import RetrievalQA
 from langchain.llms import Ollama
 import os
 
-OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+
+OLLAMA_BASE_URL = os.getenv("OLLAMA_API_HOST", "ollama")
 LLM_MODEL = os.getenv("LLM_MODEL", "codellama")
+
+logger = logging.getLogger(__name__)
 
 
 class RAGAgent:
     database = Chroma
+    llm = Ollama
 
     def __init__(self) -> None:
         self.__get_retreiver()
+        self.__build_ollama()
         self.__build_qa()
 
     def __get_retreiver(self) -> None:
@@ -24,13 +30,24 @@ class RAGAgent:
             search_kwargs={"k": 8},
         )
 
-    def __build_qa(self) -> None:
-        llm = Ollama(model=LLM_MODEL, verbose=True, base_url=OLLAMA_BASE_URL)
+    def __build_ollama(self) -> None:
+        try:
+            base_url = f"http://{OLLAMA_BASE_URL}:11434"
+            self.llm = Ollama(model=LLM_MODEL, verbose=True, base_url=base_url)
+        except Exception:
+            logger.error("Failed to build Ollama")
 
-        self.qa = RetrievalQA.from_chain_type(
-            llm=llm, chain_type="stuff", retriever=self.retriever
-        )
+    def __build_qa(self) -> None:
+        try:
+            self.qa = RetrievalQA.from_chain_type(
+                llm=self.llm, chain_type="stuff", retriever=self.retriever
+            )
+        except Exception:
+            logger.error("Failed to build QA")
 
     def ask(self, question: str) -> str:
-        result = self.qa.run(question)
-        return result
+        try:
+            result = self.qa.run(question)
+            return result
+        except Exception:
+            return "Something went wrong! :cry. Reach out to Lavesh for debugging"
