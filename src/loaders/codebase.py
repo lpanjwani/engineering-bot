@@ -1,4 +1,3 @@
-from math import log
 from langchain.text_splitter import (
     RecursiveCharacterTextSplitter,
     Language,

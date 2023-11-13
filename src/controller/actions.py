@@ -12,7 +12,7 @@ def cleanup():
 
 
 def reindex():
-    print("Loading Confluence!")
+    print("Indexing Confluence!")
     HakbahConfluenceLoader().run()
 
     print("Indexing Codebase!")
