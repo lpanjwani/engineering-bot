@@ -4,6 +4,7 @@ from langchain.vectorstores import Chroma
 
 from langchain.chains import RetrievalQA
 from langchain.llms import Ollama
+from langchain.llms.openai import OpenAI
 import os
 
 
@@ -19,7 +20,8 @@ class RAGAgent:
 
     def __init__(self) -> None:
         self.__get_retreiver()
-        self.__build_ollama()
+        # self.__build_ollama()
+        self.__build_openai()
         self.__build_qa()
 
     def __get_retreiver(self) -> None:
@@ -27,8 +29,14 @@ class RAGAgent:
 
         self.retriever = database.as_retriever(
             search_type="mmr",
-            search_kwargs={"k": 8},
+            search_kwargs={"k": 4},
         )
+
+    def __build_openai(self) -> None:
+        try:
+            self.llm = OpenAI(model_name="gpt-3.5", temperature=0.0)
+        except Exception:
+            logger.error("Failed to build OpenAI")
 
     def __build_ollama(self) -> None:
         try:

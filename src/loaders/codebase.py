@@ -77,7 +77,7 @@ class HakbahCodebaseLoader:
 
     def __split_documents(self, raw_results) -> None:
         splitter = RecursiveCharacterTextSplitter.from_language(
-            language=Language.TS, chunk_size=2000, chunk_overlap=200
+            language=Language.TS, chunk_size=1000, chunk_overlap=50
         )
         documents = splitter.split_documents(raw_results)
 
