@@ -27,4 +27,5 @@ COPY . .
 
 # Run app
 CMD ["python3", "src/app.py", "--pull_model=True" , "--reindex=True"]
+# CMD ["python3", "src/app.py", "--pull_model=True" ]
 
