@@ -21,9 +21,8 @@ RUN pip install -r requirements.txt
 # Copy app source
 COPY . .
 
-# Set Environment Variable
+# Create SSH Keys
 RUN mkdir ~/.ssh
-RUN echo $GITHUB_SSH_KEY >> ~/.ssh/id_rsa
 
 # Run app
 CMD ["python3", "src/app.py", "--pull_model=True" , "--reindex=True"]

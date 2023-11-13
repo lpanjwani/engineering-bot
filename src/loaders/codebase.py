@@ -39,7 +39,7 @@ class HakbahCodebaseLoader:
     def __downlod_repo(self, github_slug: CodebaseRepos) -> None:
         ssh_url = f"git@github.com:{github_slug}.git"
 
-        slug_split = github_slug.split("/")
+        slug_split = github_slug.value.split("/")
         repo_name = slug_split[1]
 
         self.repo_path = os.path.join("./repos", repo_name)
@@ -76,3 +76,6 @@ class HakbahCodebaseLoader:
 
     def __delete_folder(self) -> None:
         shutil.rmtree(self.repo_path)
+
+
+HakbahCodebaseLoader().run(CodebaseRepos.NEST_API)

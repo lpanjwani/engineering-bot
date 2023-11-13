@@ -140,3 +140,6 @@ ui-tests/.pnp.*
 # Environment
 .env*
 !.env.sample
+
+# Repositories
+repos/*

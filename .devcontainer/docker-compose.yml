@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
   smart_bot:
-    container_name: smart_bot
     build:
       context: ../
       dockerfile: .devcontainer/Dockerfile
@@ -21,7 +20,6 @@ services:
       - LLM_MODEL=codellama
 
   ollama:
-    container_name: ollama
     restart: unless-stopped
     image: ollama/ollama:latest
     volumes:
@@ -31,7 +29,6 @@ services:
 
 
   chroma:
-    container_name: chroma
     restart: unless-stopped
     image: ghcr.io/chroma-core/chroma:latest
     volumes:

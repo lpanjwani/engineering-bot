@@ -1,6 +1,5 @@
 services:
   smart-bot:
-    container_name: smart_bot
     build: 
       context: ../../
       dockerfile: docker/remote/Dockerfile
@@ -18,7 +17,6 @@ services:
 
 
   ollama:
-    container_name: ollama
     restart: unless-stopped
     image: ollama/ollama:latest
     volumes:
@@ -28,7 +26,6 @@ services:
 
 
   chroma:
-    container_name: chroma
     restart: unless-stopped
     image: ghcr.io/chroma-core/chroma:latest
     volumes:
