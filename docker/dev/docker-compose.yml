@@ -1,37 +1,39 @@
 services:
-  smart-bot:
-    build: 
-      context: ../../
-      dockerfile: docker/remote/Dockerfile
-    depends_on:
-      - 'chroma'
-      - 'ollama'
-    env_file: ../../.env
-    networks:
-      - smart_bot_network
-    volumes:
-      - ~/.ssh/id_rsa:/root/.ssh/id_rsa
-      - ~/.ssh/known_hosts:/root/.ssh/known_hosts
-      - bot-cache:/root/.cache/
-    environment:
-      - PYTHONPATH=/workspaces/Smart_Bot
-      - CHROMA_HOST=chroma
-      - OLLAMA_API_HOST=ollama
-      - LLM_MODEL=codellama
+  # smart-bot:
+  #   build: 
+  #     context: ../../
+  #     dockerfile: docker/remote/Dockerfile
+  #   depends_on:
+  #     - 'chroma'
+  #     - 'ollama'
+  #   env_file: ../../.env
+  #   networks:
+  #     - smart_bot_network
+  #   volumes:
+  #     - ~/.ssh/id_rsa:/root/.ssh/id_rsa
+  #     - ~/.ssh/known_hosts:/root/.ssh/known_hosts
+  #     - bot-cache:/root/.cache/
+  #   environment:
+  #     - PYTHONPATH=/workspaces/Smart_Bot
+  #     - CHROMA_HOST=chroma
+  #     - OLLAMA_API_HOST=ollama
+  #     - LLM_MODEL=codellama
 
 
-  ollama:
-    restart: unless-stopped
-    image: ollama/ollama:latest
-    volumes:
-      - ollama-storage:/root/.ollama
-    networks:
-      - smart_bot_network
+  # ollama:
+  #   restart: unless-stopped
+  #   image: ollama/ollama:latest
+  #   volumes:
+  #     - ollama-storage:/root/.ollama
+  #   networks:
+  #     - smart_bot_network
 
 
   chroma:
     restart: unless-stopped
     image: ghcr.io/chroma-core/chroma:latest
+    ports:
+      - 8000:8000
     volumes:
       - chroma-storage:/index_data
     networks:

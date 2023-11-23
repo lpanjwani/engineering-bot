@@ -4,7 +4,7 @@ from langchain.vectorstores import Chroma
 
 from langchain.chains import RetrievalQA
 from langchain.llms import Ollama
-from langchain.llms.openai import OpenAI
+from langchain.chat_models import ChatOpenAI
 import os
 
 
@@ -34,7 +34,7 @@ class RAGAgent:
 
     def __build_openai(self) -> None:
         try:
-            self.llm = OpenAI(model_name="gpt-3.5", temperature=0.0)
+            self.llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
         except Exception:
             logger.error("Failed to build OpenAI")
 
@@ -50,12 +50,13 @@ class RAGAgent:
             self.qa = RetrievalQA.from_chain_type(
                 llm=self.llm, chain_type="stuff", retriever=self.retriever
             )
-        except Exception:
-            logger.error("Failed to build QA")
+        except Exception as e:
+            logger.error(f"Failed to build QA: {e}")
 
     def ask(self, question: str) -> str:
         try:
             result = self.qa.run(question)
             return result
-        except Exception:
+        except Exception as e:
+            logger.error(f"Failed to get answer from QA: {e}")
             return "Something went wrong! :cry. Reach out to Lavesh for debugging"
