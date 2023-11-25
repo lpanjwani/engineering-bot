@@ -12,6 +12,9 @@ from enum import Enum
 import os
 import logging
 import shutil
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class CodebaseRepos(Enum):
@@ -77,7 +80,7 @@ class HakbahCodebaseLoader:
 
     def __split_documents(self, raw_results) -> None:
         splitter = RecursiveCharacterTextSplitter.from_language(
-            language=Language.TS, chunk_size=1000, chunk_overlap=50
+            language=Language.TS, chunk_size=2000, chunk_overlap=200
         )
         documents = splitter.split_documents(raw_results)
 

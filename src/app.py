@@ -4,6 +4,9 @@ from threading import Event
 from src.controller.actions import init
 import threading
 import logging
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from src.controller.cli import get_args
 

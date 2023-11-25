@@ -7,18 +7,19 @@ from src.loaders.pull_model import pull_model
 def cleanup():
     print("Reseting Database!")
     db = ChromaDatabase()
-    db.delete_collection()
+    db.drop_collection()
     db.create_collection()
+    print("Database Reset Completed!")
 
 
 def reindex():
-    print("Indexing Confluence!")
-    HakbahConfluenceLoader().run()
+    # print("Indexing Confluence!")
+    # HakbahConfluenceLoader().run()
 
     print("Indexing Codebase!")
-    HakbahCodebaseLoader().run(CodebaseRepos.NEST_API)
+    # HakbahCodebaseLoader().run(CodebaseRepos.NEST_API)
     HakbahCodebaseLoader().run(CodebaseRepos.ADMIN_API_SERVICE)
-    HakbahCodebaseLoader().run(CodebaseRepos.ADMIN_UI_SERVICE)
+    # HakbahCodebaseLoader().run(CodebaseRepos.ADMIN_UI_SERVICE)
 
     print("Done!")
 

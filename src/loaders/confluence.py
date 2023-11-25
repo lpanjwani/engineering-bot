@@ -2,8 +2,11 @@ from math import log
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import ConfluenceLoader
 from src.database.chroma import ChromaDatabase
+from dotenv import load_dotenv
 import logging
 import os
+
+load_dotenv()
 
 ATLASSIAN_URL = os.getenv("ATLASSIAN_URL")
 ATLASSIAN_USERNAME = os.getenv("ATLASSIAN_USERNAME")

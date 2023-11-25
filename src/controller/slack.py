@@ -5,9 +5,13 @@ from slack_sdk.socket_mode.response import SocketModeResponse
 from slack_sdk.socket_mode.request import SocketModeRequest
 import logging
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app_token = os.environ.get("SLACK_APP_TOKEN")
 bot_token = os.environ.get("SLACK_BOT_TOKEN")
+
 
 logger = logging.getLogger(__name__)
 
