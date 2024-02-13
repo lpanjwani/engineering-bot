@@ -1,4 +1,3 @@
-from langchain.embeddings import SentenceTransformerEmbeddings
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import Chroma
 from chromadb.config import Settings
@@ -35,7 +34,11 @@ class ChromaDatabase:
         self.collection = self.client.get_or_create_collection(name=COLLECTION_NAME)
 
     def get_embedding_model(self) -> HuggingFaceEmbeddings:
-        return HuggingFaceEmbeddings(model_name="krlvi/sentence-t5-base-nlpl-code-x-glue")
+        model_kwargs = {"device": "cpu", "trust_remote_code": True}
+        return HuggingFaceEmbeddings(
+            model_name="codesage/codesage-small",
+            model_kwargs=model_kwargs
+        )
 
     def delete_collection(self) -> None:
         self.client.delete_collection(COLLECTION_NAME)

@@ -2,7 +2,7 @@ openai==1.2.3
 langchain==0.0.333
 pypdf==3.17.0
 chromadb==0.4.16
-sentence-transformers==2.2.2
+sentence-transformers==2.3.1
 python-dotenv==1.0.0
 esprima==4.0.1
 atlassian-python-api==3.41.3
@@ -19,3 +19,7 @@ schedule==1.2.1
 GitPython==3.1.40
 python-dotenv==1.0.0
 torch==2.0.1
+transformers==4.37.2
+bitsandbytes==0.42.0
+accelerate==0.27.2
+llama-cpp-python==0.2.41
