@@ -23,7 +23,7 @@ class CodebaseRepos(Enum):
     ADMIN_UI_SERVICE = "Hakbah/Admin_UI_Service"
 
 
-class HakbahCodebaseLoader:
+class CodebaseLoader:
     repo_path: str
     loader: ConfluenceLoader
     database: ChromaDatabase
