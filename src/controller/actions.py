@@ -17,9 +17,8 @@ def reindex():
     HakbahConfluenceLoader().run()
 
     print("Indexing Codebase!")
-    CodebaseLoader().run(CodebaseRepos.NEST_API)
-    CodebaseLoader().run(CodebaseRepos.ADMIN_API_SERVICE)
-    CodebaseLoader().run(CodebaseRepos.ADMIN_UI_SERVICE)
+    CodebaseLoader().run(CodebaseRepos.API)
+    CodebaseLoader().run(CodebaseRepos.UI)
 
     print("Done!")
 

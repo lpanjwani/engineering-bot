@@ -18,9 +18,8 @@ load_dotenv()
 
 
 class CodebaseRepos(Enum):
-    NEST_API = "Hakbah/Nest_API"
-    ADMIN_API_SERVICE = "Hakbah/Admin_API_Service"
-    ADMIN_UI_SERVICE = "Hakbah/Admin_UI_Service"
+    API = "lpanjwani/API"
+    UI = "lpanjwani/UI"
 
 
 class CodebaseLoader:
