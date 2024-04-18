@@ -10,7 +10,7 @@
 
 ## Description
 
-This project is about an Engineering Bot designed to assist with Q/A of various software engineering files or documents.
+This project is about an Engineering Bot designed to assist with Q/A of various software engineering code or documents.
 
 ## Installation
 
